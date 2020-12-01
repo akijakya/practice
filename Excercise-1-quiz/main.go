@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -18,12 +19,40 @@ func main() {
 
 	//this takes an io.Reader type, which our 'file' is
 	r := csv.NewReader(file)
-	// lines is going to be a 2D slice
+	// lines is going to be a 2D slice of the whole file, because it wont be that big
 	lines, err := r.ReadAll()
 	if err != nil {
 		exit("Failed to parse the provided CSV file.")
 	}
-	fmt.Println(lines)
+	problems := parseLines(lines)
+
+	correct := 0
+	for i, p := range problems {
+		fmt.Printf("Problem #%d: %s = \n", i+1, p.q)
+		var answer string
+		//Scanf gets rid of every whitespace, so it is not good if you want to input multiple words
+		fmt.Scanf("%s\n", &answer)
+		if answer == p.a {
+			correct++
+		}
+	}
+
+	fmt.Printf("You scored %d out of %d questions!\n", correct, len(problems))
+}
+
+// this is going to take in a lines 2D string slice and a problem slice
+func parseLines (lines [][]string) []problem {
+	// the return is going to be a slice of problems of the length of the lines input
+	ret := make([]problem, len(lines))
+	for i, line := range lines {
+		ret[i] = problem {
+			q: line[0],
+			// we are trimming it because what if the csv is bad and there are unnecessary whitespaces,
+			// and the Scanf for the answer also removes whitespace so here we are also doing that for foolproofing reasons
+			a: strings.TrimSpace(line[1]),
+		}
+	}
+	return ret
 }
 
 // this will represent a question-answer pair
