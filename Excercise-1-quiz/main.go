@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
 	csvFilename := flag.String("csv", "problems.csv", "a csv file in the format of 'question,answer'")
+	// the time limit is also going to be a(n integer) flag
+	timeLimit := flag.Int("limit", 30, "The time limit for the for the quiz in seconds")
 	flag.Parse()
 
 	file, err := os.Open(*csvFilename)
@@ -26,14 +29,25 @@ func main() {
 	}
 	problems := parseLines(lines)
 
+	// a beadott timeLimit beszorozva a time.Second enum-mal adja ki, hogy ennyi másodperc legyen a timer
+	// we need to convert the timelimit to a time.Duration type, because time.Second is one 
+	// and they need to be the same type so the result would be the same type
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+
 	correct := 0
 	for i, p := range problems {
-		fmt.Printf("Problem #%d: %s = \n", i+1, p.q)
-		var answer string
-		//Scanf gets rid of every whitespace, so it is not good if you want to input multiple words
-		fmt.Scanf("%s\n", &answer)
-		if answer == p.a {
-			correct++
+		select {
+		case <-timer.C:
+			fmt.Printf("You scored %d out of %d questions!\n", correct, len(problems))
+			return
+		default:
+			fmt.Printf("Problem #%d: %s = \n", i+1, p.q)
+			var answer string
+			//Scanf gets rid of every whitespace, so it is not good if you want to input multiple words
+			fmt.Scanf("%s\n", &answer)
+			if answer == p.a {
+				correct++
+			}
 		}
 	}
 
