@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-
+	
 	"github.com/gophercises/urlshort"
 )
 
@@ -17,8 +17,7 @@ func main() {
 	}
 	mapHandler := urlshort.MapHandler(pathsToUrls, mux)
 
-	// Build the YAMLHandler using the mapHandler as the
-	// fallback
+	// Build the YAMLHandler using the mapHandler as the fallback
 	yaml := `
 - path: /urlshort
   url: https://github.com/gophercises/urlshort
