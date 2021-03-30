@@ -23,7 +23,7 @@ func main() {
 }
 */
 
-// this is typecastinh from string to byte slice
+// this is typecasting from string to byte slice
 var taskBucket = []byte("tasks")
 var db *bolt.DB
 
@@ -38,7 +38,7 @@ func Init(dbPath string) error {
 	// is already declared, the 'db' variable will be a local variable as well, instead of using the previously
 	// declared 'db' variable outside the scope of this function
 	var err error
-	db, err := bolt.Open("my.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db, err := bolt.Open(dbPath, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return err
 	}
@@ -62,6 +62,33 @@ func CreateTask (task string) (int, error) {
 		return -1, err
 	}
 	return id, nil
+}
+
+func AllTasks() ([]Task, error) {
+	var tasks []Task
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(taskBucket)
+		c := b.Cursor()
+		// k, v = key, value
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			tasks = append(tasks, Task {
+				Key: 	btoi(k),
+				Value: 	string(v),
+			})	
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return tasks, nil
+}
+
+func DeleteTask (key int) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(taskBucket)
+		return b.Delete(itob(key))
+	})
 }
 
 // integer to byte slice converter
