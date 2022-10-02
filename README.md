@@ -1,2 +1,1 @@
-# gophercises
-go practice
+# go practice
