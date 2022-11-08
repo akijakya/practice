@@ -9,102 +9,7 @@ type ListNode struct {
 }
 
 func main() {
-	listNode1 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 2,
-				Next: &ListNode{
-					Val:  1,
-					Next: nil,
-				},
-			},
-		},
-	}
-
-	listNode2 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 3,
-				Next: &ListNode{
-					Val: 2,
-					Next: &ListNode{
-						Val:  1,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
-
-	listNode3 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 2,
-				Next: &ListNode{
-					Val: 2,
-					Next: &ListNode{
-						Val:  1,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
-
-	listNode4 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 3,
-				Next: &ListNode{
-					Val: 4,
-					Next: &ListNode{
-						Val:  5,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
-
-	listNode5 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val: 2,
-			Next: &ListNode{
-				Val: 2,
-				Next: &ListNode{
-					Val: 1,
-					Next: &ListNode{
-						Val:  1,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
-
-	listNode6 := &ListNode{
-		Val:  1,
-		Next: nil,
-	}
-
-	listNode7 := &ListNode{
-		Val: 1,
-		Next: &ListNode{
-			Val:  1,
-			Next: nil,
-		},
-	}
-
-	listNode8 := &ListNode{
+	listNode := &ListNode{
 		Val: 1,
 		Next: &ListNode{
 			Val: 0,
@@ -115,20 +20,12 @@ func main() {
 		},
 	}
 
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode1)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode2)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode3)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode4)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode5)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode6)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode7)))
-	println(fmt.Sprintf("result: %v", isPalindrome(listNode8)))
+	println(fmt.Sprintf("result: %v", isPalindrome(listNode)))
 }
 
 func isPalindrome(head *ListNode) bool {
 	var s []int
 	_, slice := collectVal(head, s)
-	println(fmt.Sprintf("slice: %#v", slice))
 
 	res := true
 
